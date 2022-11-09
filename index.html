@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Network Graph</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <script src="https://unpkg.com/babel-standalone"></script>
+
+    <script src="https://unpkg.com/react-force-graph-2d"></script>
+
+    <script src="./my-data.js"></script>
+</head>
+
+<body>
+    <div id="graph"></div>
+
+    <script type="text/jsx">
+        ReactDOM.render(
+            <ForceGraph2D graphData={myData}/>,
+            document.getElementById('graph')
+          );
+    </script>
+</body>
+
+</html>

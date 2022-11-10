@@ -83,8 +83,8 @@
                 graphData={data}
                 nodeAutoColorBy="group"
                 nodeCanvasObject={(node, ctx, globalScale) => {
-                    const label = node.id;
-                    const fontSize = 12 / globalScale;
+                    const label = node.name;
+                    const fontSize = 15 / globalScale;
                     ctx.font = `${fontSize}px Sans-Serif`;
                     const textWidth = ctx.measureText(label).width;
                     const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
@@ -94,7 +94,7 @@
 
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillStyle = node.color;
+                    ctx.fillStyle = "black";
                     ctx.fillText(label, node.x, node.y);
 
                     node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint

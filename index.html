@@ -10,19 +10,103 @@
 
     <script src="https://unpkg.com/babel-standalone"></script>
 
+    <script src="https://unpkg.com/three"></script>
+
     <script src="https://unpkg.com/react-force-graph-2d"></script>
 
-    <script src="./my-data.js"></script>
 </head>
 
 <body>
     <div id="graph"></div>
+    <script>
+        data = {
+            "nodes": [
+                {
+                    "id": "id1",
+                    "name": "OSINT",
+                    "val": 5
+                },
+                {
+                    "id": "id2",
+                    "name": "Russia",
+                    "val": 3
+                },
+                {
+                    "id": "id3",
+                    "name": "OSINT CLUB, https://t.me/osint_club_channel",
+                    "val": 1
+                },
+                {
+                    "id": "id4",
+                    "name": "gospodin sobaka, @gspdnsobaka",
+                    "val": 1
+                },
+                {
+                    "id": "id5",
+                    "name": "Cyber_detective, https://t.me/cybdetective",
+                    "val": 1
+                },
+                {
+                    "id": "id6",
+                    "name": "Stranger, @cyb_detective",
+                    "val": 1
+                },
+            ],
+            "links": [
+                {
+                    "source": "id1",
+                    "target": "id2"
+                },
+                {
+                    "source": "id2",
+                    "target": "id3"
+                },
+                {
+                    "source": "id3",
+                    "target": "id4"
+                },
+                {
+                    "source": "id2",
+                    "target": "id5"
+                },
+                {
+                    "source": "id5",
+                    "target": "id6"
+                },
+            ]
+        }
+    </script>
 
     <script type="text/jsx">
         ReactDOM.render(
-            <ForceGraph2D graphData={myData}/>,
+            <ForceGraph2D
+                graphData={data}
+                nodeAutoColorBy="group"
+                nodeCanvasObject={(node, ctx, globalScale) => {
+                    const label = node.id;
+                    const fontSize = 12 / globalScale;
+                    ctx.font = `${fontSize}px Sans-Serif`;
+                    const textWidth = ctx.measureText(label).width;
+                    const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = node.color;
+                    ctx.fillText(label, node.x, node.y);
+
+                    node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
+                }}
+                nodePointerAreaPaint={(node, color, ctx) => {
+                    ctx.fillStyle = color;
+                    const bckgDimensions = node.__bckgDimensions;
+                    bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+                }}
+            />,
             document.getElementById('graph')
-          );
+        );
     </script>
 </body>
 
